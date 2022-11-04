@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { logRoles } from "@testing-library/react";
-import App from "./App";
+import App, { replaceCamelWithSpaces } from "./App";
 
 test("button has correct initial color, and updates when click", () => {
   const { container } = render(<App />);
@@ -54,16 +54,30 @@ test("checkbox disables button color is gray", () => {
   const colorButton = screen.getByRole("button", { name: "Change to blue" });
 
   fireEvent.click(checkbox);
-  expect(colorButton).toHaveStyle({backgroundColor: "gray"});
-  
+  expect(colorButton).toHaveStyle({ backgroundColor: "gray" });
+
   fireEvent.click(checkbox);
-  expect(colorButton).toHaveStyle({backgroundColor: "red"});
-  
+  expect(colorButton).toHaveStyle({ backgroundColor: "red" });
+
   fireEvent.click(colorButton);
-  
+
   fireEvent.click(checkbox);
-  expect(colorButton).toHaveStyle({backgroundColor: "gray"});
-  
+  expect(colorButton).toHaveStyle({ backgroundColor: "gray" });
+
   fireEvent.click(checkbox);
-  expect(colorButton).toHaveStyle({backgroundColor: "blue"});
+  expect(colorButton).toHaveStyle({ backgroundColor: "blue" });
+});
+
+describe("check replaceCamelWithSpaces", () => {
+  test("with no Spaces", () => {
+    expect(replaceCamelWithSpaces("Red")).toEqual("Red");
+  });
+
+  test("with one Spaces", () => {
+    expect(replaceCamelWithSpaces("MidnightBlue")).toEqual("Midnight Blue");
+  });
+
+  test("with multiple spaces", () => {
+    expect(replaceCamelWithSpaces("MediumVioletRed")).toEqual("Medium Violet Red");
+  });
 });
